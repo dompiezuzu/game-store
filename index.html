@@ -1,106 +1,761 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Game Store</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <style>
-        body{
-            margin:0;
-            font-family:Arial;
-            background:#0f172a;
-            color:white;
-        }
+<title>Dompie Store</title>
 
-        header{
-            background:#111827;
-            padding:20px;
-            text-align:center;
-            border-bottom:2px solid #1e293b;
-        }
+<style>
 
-        h1{
-            margin:0;
-            color:#60a5fa;
-        }
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+}
 
-        .hero{
-            text-align:center;
-            padding:40px 20px;
-        }
+body{
+    font-family:Arial, sans-serif;
+    background:#070b14;
+    color:white;
+}
 
-        .search{
-            width:80%;
-            max-width:300px;
-            padding:12px;
-            border:none;
-            border-radius:10px;
-        }
+/* NAVBAR */
 
-        .games{
-            display:grid;
-            grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
-            gap:15px;
-            padding:20px;
-        }
+.navbar{
+    position:sticky;
+    top:0;
+    z-index:100;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:15px 6%;
+    background:rgba(7,11,20,.95);
+    border-bottom:1px solid #1f2937;
+    backdrop-filter:blur(10px);
+}
 
-        .card{
-            background:#1e293b;
-            border-radius:15px;
-            padding:15px;
-            text-align:center;
-        }
+.logo{
+    font-size:22px;
+    font-weight:bold;
+    color:#60a5fa;
+}
 
-        .card img{
-            width:100%;
-            border-radius:10px;
-        }
+.cart-button{
+    background:#2563eb;
+    color:white;
+    border:0;
+    padding:10px 16px;
+    border-radius:10px;
+    font-size:15px;
+    cursor:pointer;
+}
 
-        button{
-            background:#3b82f6;
-            color:white;
-            border:none;
-            padding:10px 15px;
-            border-radius:8px;
-        }
-    </style>
+/* HERO */
+
+.hero{
+    margin:25px auto;
+    width:88%;
+    max-width:1100px;
+    min-height:280px;
+    border-radius:25px;
+    padding:50px 30px;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+
+    background:
+    radial-gradient(circle at 80% 20%,#2563eb55,transparent 35%),
+    linear-gradient(135deg,#111827,#0f172a);
+
+    border:1px solid #263244;
+}
+
+.hero h1{
+    font-size:42px;
+    max-width:600px;
+}
+
+.hero p{
+    margin:15px 0 25px;
+    color:#94a3b8;
+    font-size:17px;
+}
+
+.search{
+    width:100%;
+    max-width:450px;
+    padding:15px 18px;
+    border:1px solid #334155;
+    background:#111827;
+    color:white;
+    border-radius:12px;
+    outline:none;
+    font-size:16px;
+}
+
+.search:focus{
+    border-color:#3b82f6;
+}
+
+/* SECTION */
+
+.section{
+    width:88%;
+    max-width:1100px;
+    margin:40px auto;
+}
+
+.section-title{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:20px;
+}
+
+.section-title h2{
+    font-size:25px;
+}
+
+/* PRODUCTS */
+
+.products{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(190px,1fr));
+    gap:18px;
+}
+
+.card{
+    position:relative;
+    overflow:hidden;
+    background:#111827;
+    border:1px solid #1f2937;
+    border-radius:18px;
+    transition:.25s;
+}
+
+.card:hover{
+    transform:translateY(-5px);
+    border-color:#3b82f6;
+    box-shadow:0 10px 35px #0008;
+}
+
+.card-image{
+    width:100%;
+    height:150px;
+    object-fit:cover;
+}
+
+.card-content{
+    padding:16px;
+}
+
+.card h3{
+    font-size:18px;
+    margin-bottom:8px;
+}
+
+.description{
+    color:#94a3b8;
+    font-size:13px;
+    min-height:34px;
+}
+
+.price{
+    margin:14px 0;
+    font-size:19px;
+    font-weight:bold;
+    color:#60a5fa;
+}
+
+.old-price{
+    color:#64748b;
+    text-decoration:line-through;
+    font-size:13px;
+    margin-right:5px;
+}
+
+.buy{
+    width:100%;
+    padding:11px;
+    border:0;
+    border-radius:9px;
+    background:#2563eb;
+    color:white;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+.buy:hover{
+    background:#3b82f6;
+}
+
+.sale{
+    position:absolute;
+    top:10px;
+    left:10px;
+    background:#ef4444;
+    padding:5px 9px;
+    border-radius:7px;
+    font-size:12px;
+    font-weight:bold;
+}
+
+/* CART */
+
+.cart{
+    position:fixed;
+    right:-400px;
+    top:0;
+    width:340px;
+    max-width:90%;
+    height:100%;
+    background:#0f172a;
+    z-index:200;
+    padding:25px;
+    box-shadow:-10px 0 40px #0008;
+    transition:.3s;
+    overflow-y:auto;
+}
+
+.cart.open{
+    right:0;
+}
+
+.cart-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:25px;
+}
+
+.close{
+    background:none;
+    border:0;
+    color:white;
+    font-size:25px;
+    cursor:pointer;
+}
+
+.cart-item{
+    display:flex;
+    justify-content:space-between;
+    gap:10px;
+    padding:15px 0;
+    border-bottom:1px solid #1e293b;
+}
+
+.cart-item small{
+    color:#94a3b8;
+}
+
+.remove{
+    background:#ef4444;
+    color:white;
+    border:0;
+    padding:5px 8px;
+    border-radius:6px;
+}
+
+.total{
+    margin-top:25px;
+    font-size:20px;
+    font-weight:bold;
+}
+
+.checkout{
+    margin-top:15px;
+    width:100%;
+    padding:13px;
+    background:#22c55e;
+    border:0;
+    color:white;
+    border-radius:10px;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+/* FOOTER */
+
+footer{
+    margin-top:70px;
+    padding:30px;
+    text-align:center;
+    background:#0b1120;
+    color:#64748b;
+}
+
+/* MOBILE */
+
+@media(max-width:600px){
+
+    .hero{
+        padding:35px 22px;
+        min-height:300px;
+    }
+
+    .hero h1{
+        font-size:32px;
+    }
+
+    .products{
+        grid-template-columns:repeat(2,1fr);
+        gap:12px;
+    }
+
+    .card-image{
+        height:120px;
+    }
+
+    .card-content{
+        padding:12px;
+    }
+
+    .card h3{
+        font-size:16px;
+    }
+
+    .price{
+        font-size:16px;
+    }
+
+}
+
+</style>
 </head>
+
 <body>
 
-<header>
-    <h1>🎮 DOMPIE STORE</h1>
-</header>
+<!-- NAVBAR -->
 
-<div class="hero">
-    <h2>Game Terbaik, Harga Terbaik</h2>
-    <input class="search" placeholder="Cari game...">
+<nav class="navbar">
+
+    <div class="logo">
+        🎮 DOMPIE STORE
+    </div>
+
+    <button class="cart-button" onclick="openCart()">
+        🛒 Keranjang
+        <span id="cartCount">0</span>
+    </button>
+
+</nav>
+
+
+<!-- HERO -->
+
+<section class="hero">
+
+    <h1>
+        Game favoritmu,<br>
+        harga lebih mantap.
+    </h1>
+
+    <p>
+        Temukan berbagai game dan item digital di Dompie Store.
+    </p>
+
+    <input
+        id="search"
+        class="search"
+        type="text"
+        placeholder="🔎 Cari game..."
+        onkeyup="searchProducts()"
+    >
+
+</section>
+
+
+<!-- PRODUCTS -->
+
+<section class="section">
+
+    <div class="section-title">
+        <h2>🔥 Produk Populer</h2>
+    </div>
+
+    <div class="products" id="products">
+
+
+        <!-- PRODUCT 1 -->
+
+        <div class="card" data-name="Buddha Fruit">
+
+            <span class="sale">SALE</span>
+
+            <img
+                class="card-image"
+                src="https://picsum.photos/500/300?random=10"
+            >
+
+            <div class="card-content">
+
+                <h3>Buddha Fruit</h3>
+
+                <p class="description">
+                    Item digital untuk game favoritmu.
+                </p>
+
+                <div class="price">
+                    <span class="old-price">Rp 10.000</span>
+                    Rp 5.000
+                </div>
+
+                <button
+                    class="buy"
+                    onclick="addToCart('Buddha Fruit',5000)"
+                >
+                    🛒 Tambah
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <!-- PRODUCT 2 -->
+
+        <div class="card" data-name="Portal">
+
+            <span class="sale">SALE</span>
+
+            <img
+                class="card-image"
+                src="https://picsum.photos/500/300?random=11"
+            >
+
+            <div class="card-content">
+
+                <h3>Portal</h3>
+
+                <p class="description">
+                    Item digital untuk game favoritmu.
+                </p>
+
+                <div class="price">
+                    <span class="old-price">Rp 10.000</span>
+                    Rp 5.000
+                </div>
+
+                <button
+                    class="buy"
+                    onclick="addToCart('Portal',5000)"
+                >
+                    🛒 Tambah
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <!-- PRODUCT 3 -->
+
+        <div class="card" data-name="Kitsune">
+
+            <span class="sale">HOT</span>
+
+            <img
+                class="card-image"
+                src="https://picsum.photos/500/300?random=12"
+            >
+
+            <div class="card-content">
+
+                <h3>Kitsune</h3>
+
+                <p class="description">
+                    Item digital pilihan untuk gamer.
+                </p>
+
+                <div class="price">
+                    Rp 50.000
+                </div>
+
+                <button
+                    class="buy"
+                    onclick="addToCart('Kitsune',50000)"
+                >
+                    🛒 Tambah
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <!-- PRODUCT 4 -->
+
+        <div class="card" data-name="T-rex fruit">
+
+            <img
+                class="card-image"
+                src="https://picsum.photos/500/300?random=13"
+            >
+
+            <div class="card-content">
+
+                <h3>T-rex fruit</h3>
+
+                <p class="description">
+                    Produk digital premium.
+                </p>
+
+                <div class="price">
+                    Rp 7.000
+                </div>
+
+                <button
+                    class="buy"
+                    onclick="addToCart('T-rex',7000)"
+                >
+                    🛒 Tambah
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- CART -->
+
+<div class="cart" id="cart">
+
+    <div class="cart-header">
+
+        <h2>🛒 Keranjang</h2>
+
+        <button class="close" onclick="closeCart()">
+            ×
+        </button>
+
+    </div>
+
+    <div id="cartItems">
+
+        <p style="color:#94a3b8">
+            Keranjang masih kosong.
+        </p>
+
+    </div>
+
+    <div class="total">
+
+        Total:
+        <span id="total">
+            Rp 0
+        </span>
+
+    </div>
+
+    <button class="checkout" onclick="checkout()">
+        💳 Checkout
+    </button>
+
 </div>
 
-<div class="games">
 
-    <div class="card">
-        <img src="https://picsum.photos/300/200?1">
-        <h3>Buddha Fruit</h3>
-        <p>Rp 5.000</p>
-        <button>Beli</button>
-    </div>
+<footer>
 
-    <div class="card">
-        <img src="https://picsum.photos/300/200?2">
-        <h3>Portal</h3>
-        <p>Rp 5.000</p>
-        <button>Beli</button>
-    </div>
+    © 2026 Dompie Store
+    <br>
+    Game & Digital Store
 
-    <div class="card">
-        <img src="https://picsum.photos/300/200?3">
-        <h3>Cyberpunk 2077</h3>
-        <p>Rp 250.000</p>
-        <button>Beli</button>
-    </div>
+</footer>
 
-</div>
+
+<script>
+
+let cart = [];
+
+
+/* TAMBAH PRODUK */
+
+function addToCart(name, price){
+
+    cart.push({
+        name:name,
+        price:price
+    });
+
+    updateCart();
+
+    openCart();
+}
+
+
+/* UPDATE CART */
+
+function updateCart(){
+
+    const cartItems =
+        document.getElementById("cartItems");
+
+    const cartCount =
+        document.getElementById("cartCount");
+
+    const totalElement =
+        document.getElementById("total");
+
+
+    cartCount.innerText = cart.length;
+
+
+    if(cart.length === 0){
+
+        cartItems.innerHTML =
+        '<p style="color:#94a3b8">Keranjang masih kosong.</p>';
+
+        totalElement.innerText = "Rp 0";
+
+        return;
+    }
+
+
+    let total = 0;
+
+    cartItems.innerHTML = "";
+
+
+    cart.forEach((item,index)=>{
+
+        total += item.price;
+
+
+        cartItems.innerHTML += `
+
+        <div class="cart-item">
+
+            <div>
+
+                <strong>${item.name}</strong>
+
+                <br>
+
+                <small>
+                    Rp ${item.price.toLocaleString("id-ID")}
+                </small>
+
+            </div>
+
+            <button
+                class="remove"
+                onclick="removeItem(${index})"
+            >
+                ×
+            </button>
+
+        </div>
+
+        `;
+
+    });
+
+
+    totalElement.innerText =
+        "Rp " + total.toLocaleString("id-ID");
+
+}
+
+
+/* HAPUS PRODUK */
+
+function removeItem(index){
+
+    cart.splice(index,1);
+
+    updateCart();
+
+}
+
+
+/* BUKA CART */
+
+function openCart(){
+
+    document
+    .getElementById("cart")
+    .classList
+    .add("open");
+
+}
+
+
+/* TUTUP CART */
+
+function closeCart(){
+
+    document
+    .getElementById("cart")
+    .classList
+    .remove("open");
+
+}
+
+
+/* SEARCH */
+
+function searchProducts(){
+
+    const search =
+        document
+        .getElementById("search")
+        .value
+        .toLowerCase();
+
+
+    const products =
+        document
+        .querySelectorAll(".card");
+
+
+    products.forEach(product=>{
+
+        const name =
+            product
+            .getAttribute("data-name")
+            .toLowerCase();
+
+
+        if(name.includes(search)){
+
+            product.style.display = "";
+
+        }else{
+
+            product.style.display = "none";
+
+        }
+
+    });
+
+}
+
+
+/* CHECKOUT */
+
+function checkout(){
+
+    if(cart.length === 0){
+
+        alert("Keranjang masih kosong!");
+
+        return;
+
+    }
+
+
+    alert(
+        "Checkout akan kita sambungkan ke WhatsApp/payment nanti."
+    );
+
+}
+
+</script>
 
 </body>
-</html>
+                                    </html>
